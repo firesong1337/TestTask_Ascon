@@ -1,256 +1,65 @@
-//using Microsoft.Extensions.Configuration;
-//using System.Data;
-//using System.Data.SqlClient;
-
-//namespace TestTaskAskon
-//{
-//    public partial class Form1 : Form
-//    {
-//        private DataTable objectsTable;
-//        //private DataTable objectsTable;
-//        public Form1()
-//        {
-//            InitializeComponent();
-//        }
-
-//        private void Form1_Load(object sender, EventArgs e)
-//        {
-//            // Загрузка файла конфигурации
-//            var config = new ConfigurationBuilder()
-//                //.SetBasePath(Directory.GetCurrentDirectory())
-//                .AddJsonFile("C:\\Users\\user\\source\\repos\\TestTaskAskon\\TestTaskAskon\\appsettings.json")
-//                .Build();
-
-//            // Получение строки подключения к базе данных
-//            string connectionString = config.GetConnectionString("MyDbConnection");
-//            LoadTreeView(connectionString);
-//        }
-
-
-//        private void LoadTreeView(string connectionString)
-//        {
-//            try
-//            {
-//                using (SqlConnection connection = new SqlConnection(connectionString))
-//                {
-//                    connection.Open();
-
-//                    string query = "SELECT ID, Type, Product FROM Object";
-//                    SqlCommand command = new SqlCommand(query, connection);
-//                    //DataTable objectsTable = new DataTable();
-//                    objectsTable = new DataTable();
-//                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-//                    adapter.Fill(objectsTable);
-
-//                    query = "SELECT IDparent, IDchild, Linkname FROM Hooks";
-//                    command = new SqlCommand(query, connection);
-//                    adapter = new SqlDataAdapter(command);
-//                    DataTable relationsTable = new DataTable();
-//                    adapter.Fill(relationsTable);
-
-//                    foreach (DataRow row in objectsTable.Rows)
-//                    {
-//                        int objectId = Convert.ToInt32(row["ID"]);
-//                        string objectType = row["Type"].ToString();
-//                        string objectProduct = row["Product"].ToString();
-
-//                        TreeNode node = new TreeNode($"{objectType}: {objectProduct}");
-//                        node.Tag = objectId;
-
-//                        AddChildNodes(node, objectId, relationsTable);
-
-//                        treeView1.Nodes.Add(node);
-//                    }
-
-//                    connection.Close();
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                MessageBox.Show("Ошибка при загрузке данных: " + ex.Message);
-//            }
-//        }
-
-//        private void AddChildNodes(TreeNode parentNode, int parentId, DataTable relationsTable)
-//        {
-//            DataRow[] childRows = relationsTable.Select($"IDparent = {parentId}");
-//            foreach (DataRow row in childRows)
-//            {
-//                int childId = Convert.ToInt32(row["IDchild"]);
-//                DataRow childObjectRow = FindObjectById(childId);
-
-//                if (childObjectRow != null)
-//                {
-//                    string childObjectType = childObjectRow["Type"].ToString();
-//                    string childObjectProduct = childObjectRow["Product"].ToString();
-
-//                    TreeNode childNode = new TreeNode($"{childObjectType}: {childObjectProduct}");
-//                    childNode.Tag = childId;
-
-//                    AddChildNodes(childNode, childId, relationsTable);
-
-//                    parentNode.Nodes.Add(childNode);
-//                }
-//            }
-//        }
-
-//        private DataRow FindObjectById(int objectId)
-//        {
-//            foreach (DataRow row in objectsTable.Rows)
-//            {
-//                int id = Convert.ToInt32(row["id"]);
-//                if (id == objectId)
-//                {
-//                    return row;
-//                }
-//            }
-//            return null;
-//        }
-//    }
-//}
-//using Microsoft.Extensions.Configuration;
-//using System;
-//using System.Data;
-//using System.Data.SqlClient;
-//using System.Windows.Forms;
-
-//namespace TestTaskAskon
-//{
-//    public partial class Form1 : Form
-//    {
-//        private DataTable objectsTable;
-
-//        public Form1()
-//        {
-//            InitializeComponent();
-//        }
-
-//        private void Form1_Load(object sender, EventArgs e)
-//        {
-//            // Загрузка файла конфигурации
-//            var config = new ConfigurationBuilder()
-//                //.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-//                .AddJsonFile("C:\\Users\\user\\source\\repos\\TestTaskAskon\\TestTaskAskon\\appsettings.json")
-//                .Build();
-
-//            // Получение строки подключения к базе данных
-//            string connectionString = config.GetConnectionString("MyDbConnection");
-//            LoadTreeView(connectionString);
-//        }
-
-//        private void LoadTreeView(string connectionString)
-//        {
-//            try
-//            {
-//                using (SqlConnection connection = new SqlConnection(connectionString))
-//                {
-//                    connection.Open();
-
-//                    string query = "SELECT ID, Type, Product FROM Object";
-//                    SqlCommand command = new SqlCommand(query, connection);
-//                    objectsTable = new DataTable();
-//                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-//                    adapter.Fill(objectsTable);
-
-//                    query = "SELECT IDparent, IDchild, Linkname FROM Hooks";
-//                    command = new SqlCommand(query, connection);
-//                    adapter = new SqlDataAdapter(command);
-//                    DataTable relationsTable = new DataTable();
-//                    adapter.Fill(relationsTable);
-
-//                    // Находим корневой элемент дерева
-//                    DataRow rootObjectRow = FindObjectById(103); // Заменить 103 на нужный ID
-//                    if (rootObjectRow != null)
-//                    {
-//                        int rootObjectId = Convert.ToInt32(rootObjectRow["ID"]);
-//                        string rootObjectType = rootObjectRow["Type"].ToString();
-//                        string rootObjectProduct = rootObjectRow["Product"].ToString();
-
-//                        TreeNode rootNode = new TreeNode($"{rootObjectType}: {rootObjectProduct}");
-//                        rootNode.Tag = rootObjectId;
-
-//                        AddChildNodes(rootNode, rootObjectId, relationsTable);
-
-//                        treeView1.Nodes.Add(rootNode);
-//                    }
-
-//                    connection.Close();
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                MessageBox.Show("Ошибка при загрузке данных: " + ex.Message);
-//            }
-//        }
-
-//        private void AddChildNodes(TreeNode parentNode, int parentId, DataTable relationsTable)
-//        {
-//            DataRow[] childRows = relationsTable.Select($"IDparent = {parentId}");
-//            foreach (DataRow row in childRows)
-//            {
-//                int childId = Convert.ToInt32(row["IDchild"]);
-//                DataRow childObjectRow = FindObjectById(childId);
-
-//                if (childObjectRow != null)
-//                {
-//                    string childObjectType = childObjectRow["Type"].ToString();
-//                    string childObjectProduct = childObjectRow["Product"].ToString();
-
-//                    TreeNode childNode = new TreeNode($"{childObjectType}: {childObjectProduct}");
-//                    childNode.Tag = childId;
-
-//                    AddChildNodes(childNode, childId, relationsTable);
-
-//                    parentNode.Nodes.Add(childNode);
-//                }
-//            }
-//        }
-
-//        private DataRow FindObjectById(int objectId)
-//        {
-//            foreach (DataRow row in objectsTable.Rows)
-//            {
-//                int id = Convert.ToInt32(row["ID"]);
-//                if (id == objectId)
-//                {
-//                    return row;
-//                }
-//            }
-//            return null;
-//        }
-//    }
-//}
-using Microsoft.Extensions.Configuration;
 using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Microsoft.Extensions.Configuration;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TestTaskAskon
 {
     public partial class Form1 : Form
     {
         private DataTable objectsTable;
+        private string connectionString;
 
         public Form1()
         {
             InitializeComponent();
+            //Загрузка файла конфигурации и получение строки подключения
+            //var config = new ConfigurationBuilder()
+            //    //.AddJsonFile("C:\\Users\\user\\source\\repos\\TestTaskAskon\\TestTaskAskon\\appsettings.json")
+            //    .SetBasePath(Directory.GetCurrentDirectory())
+            //    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            //    .Build();
+            var config = new ConfigurationBuilder()
+                 .SetBasePath(Directory.GetCurrentDirectory())
+                 .AddJsonFile("appsettings.json")
+                 .Build();
+            connectionString = config.GetConnectionString("MyDbConnection");
+
+
+
+            ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+            ToolStripMenuItem addNewToolStripMenuItem = new ToolStripMenuItem("Добавить новый");
+            ToolStripMenuItem addToExistingToolStripMenuItem = new ToolStripMenuItem("Добавить к существующему");
+            ToolStripMenuItem DeleteToolStripMenuItem = new ToolStripMenuItem("Удалить");
+            ToolStripMenuItem ChangeToolStripMenuItem = new ToolStripMenuItem("Изменить");
+            // Привязка обработчиков событий для пунктов меню
+            addNewToolStripMenuItem.Click += AddNewToolStripMenuItem_Click;
+            addToExistingToolStripMenuItem.Click += AddToExistingToolStripMenuItem_Click;
+            DeleteToolStripMenuItem.Click += DeleteToolStripMenuItem_Click;
+            ChangeToolStripMenuItem.Click += ChangeToolStripMenuItem_Click;
+            // Добавление пунктов меню в контекстное меню
+            contextMenuStrip.Items.Add(addNewToolStripMenuItem);
+            contextMenuStrip.Items.Add(addToExistingToolStripMenuItem);
+            contextMenuStrip.Items.Add(DeleteToolStripMenuItem);
+            contextMenuStrip.Items.Add(ChangeToolStripMenuItem);
+
+            // Привязка контекстного меню к TreeView
+            treeView1.ContextMenuStrip = contextMenuStrip;
+
         }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Загрузка файла конфигурации
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("C:\\Users\\user\\source\\repos\\TestTaskAskon\\TestTaskAskon\\appsettings.json")
-                .Build();
-
-            // Получение строки подключения к базе данных
-            string connectionString = config.GetConnectionString("MyDbConnection");
-            LoadTreeView(connectionString);
+            LoadTreeView();
         }
 
-        private void LoadTreeView(string connectionString)
+        private void LoadTreeView()
         {
+            treeView1.Nodes.Clear();
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -340,112 +149,364 @@ namespace TestTaskAskon
 
 
 
-        ///////////////////////////////////////////////////////
 
 
-        //private void TreeView1_MouseClick(object sender, MouseEventArgs e)
+
+
+
+
+
+
+
+        // В классе Form1
+
+        private void AddNewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddElementForm form = new AddElementForm(connectionString);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                // Получите значения из формы
+                int newId = form.GetId();
+                string newType = form.Get_Type();
+                string newProduct = form.GetProduct();
+
+                // Выполните действия для добавления нового элемента в таблицу Object базы данных
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = "INSERT INTO Object (ID, Type, Product) VALUES (@Id, @Type, @Product)";
+                        SqlCommand command = new SqlCommand(query, connection);
+                        command.Parameters.AddWithValue("@Id", newId);
+                        command.Parameters.AddWithValue("@Type", newType);
+                        command.Parameters.AddWithValue("@Product", newProduct);
+                        command.ExecuteNonQuery();
+
+                        connection.Close();
+                    }
+
+                    // Обновите TreeView
+                    LoadTreeView();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при добавлении нового элемента: " + ex.Message);
+                }
+            }
+        }
+
+        private void AddToExistingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode != null)
+            {
+                int parentId = (int)treeView1.SelectedNode.Tag;
+
+                AddElementForm form = new AddElementForm(connectionString);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    // Получите значения из формы
+                    int newId = form.GetId();
+                    string newType = form.Get_Type();
+                    string newProduct = form.GetProduct();
+
+                    // Выполните действия для добавления нового элемента в таблицу Object базы данных
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string query = "INSERT INTO Object (ID, Type, Product) VALUES (@Id, @Type, @Product)";
+                            SqlCommand command = new SqlCommand(query, connection);
+                            command.Parameters.AddWithValue("@Id", newId);
+                            command.Parameters.AddWithValue("@Type", newType);
+                            command.Parameters.AddWithValue("@Product", newProduct);
+                            command.ExecuteNonQuery();
+
+                            // Выполните действия для добавления связи в таблицу Hooks
+                            query = "INSERT INTO Hooks (IDparent, IDchild, Linkname) VALUES (@ParentId, @ChildId, @Linkname)";
+                            command = new SqlCommand(query, connection);
+                            command.Parameters.AddWithValue("@ParentId", parentId);
+                            command.Parameters.AddWithValue("@ChildId", newId);
+
+                            //// В зависимости от типа родительского объекта, установите соответствующее значение для Linkname
+                            //// Здесь предполагается, что в таблице Object есть поле Type, которое определяет тип объекта
+                            //// и соответствующие значения для связи в таблице Hooks
+                            if (treeView1.SelectedNode.Parent == null)
+                            {
+                                command.Parameters.AddWithValue("@Linkname", "Состоит из");
+                            }
+                            else
+                            {
+                                DataRow parentObjectRow = FindObjectById(parentId);
+                                string parentObjectType = parentObjectRow["Type"].ToString();
+
+                                //Установите соответствующее значение Linkname для родительского типа объекта
+                                // В данном примере предполагается, что для каждого типа объекта установлено соответствующее значение Linkname
+                                // в таблице Object
+                                switch (parentObjectType)
+                                {
+                                    case "Деталь":
+                                        command.Parameters.AddWithValue("@Linkname", "Материал по КД");
+                                        break;
+                                    case "Материал по КД":
+                                        command.Parameters.AddWithValue("@Linkname", "Документы");
+                                        break;
+                                    //Добавьте другие типы объектов и соответствующие значения Linkname при необходимости
+                                    default:
+                                        command.Parameters.AddWithValue("@Linkname", string.Empty);
+                                        break;
+                                }
+                            }
+
+                            command.ExecuteNonQuery();
+
+                            connection.Close();
+                        }
+
+                        // Обновите TreeView
+                        LoadTreeView();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка при добавлении нового элемента: " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите родительский объект");
+            }
+        }
+
+        /// УДАЛЕНИЕ
+        private void RemoveNode(TreeNode node)
+        {
+            int objectId = (int)node.Tag;
+
+            // Проверка, является ли узел корневым
+            if (node.Parent == null)
+            {
+                // Удаление корневого узла
+                if (MessageBox.Show("Вы уверены, что хотите удалить этот элемент и все его потомки?", "Подтвердите удаление", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            // Рекурсивное удаление элемента и всех его потомков из базы данных
+                            RemoveNodeAndDescendants(objectId, connection);
+
+                            connection.Close();
+                        }
+
+                        // Удаление узла из TreeView
+                        node.Remove();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка при удалении элемента: " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                // Удаление вложенного узла
+                if (MessageBox.Show("Вы уверены, что хотите удалить этот элемент?", "Подтвердите удаление", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            // Удаление связи из таблицы Hooks
+                            string deleteHooksQuery = "DELETE FROM Hooks WHERE IDchild = @ObjectId";
+
+                            SqlCommand deleteHooksCommand = new SqlCommand(deleteHooksQuery, connection);
+                            deleteHooksCommand.Parameters.AddWithValue("@ObjectId", objectId);
+                            deleteHooksCommand.ExecuteNonQuery();
+
+                            // Удаление элемента из базы данных
+                            string deleteObjectQuery = "DELETE FROM Object WHERE ID = @ObjectId";
+
+                            SqlCommand deleteObjectCommand = new SqlCommand(deleteObjectQuery, connection);
+                            deleteObjectCommand.Parameters.AddWithValue("@ObjectId", objectId);
+                            deleteObjectCommand.ExecuteNonQuery();
+
+                            connection.Close();
+                        }
+
+                        // Удаление узла из TreeView
+                        node.Remove();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка при удалении элемента: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void RemoveNodeAndDescendants(int objectId, SqlConnection connection)
+        {
+            // Получить потомков текущего узла
+            List<int> childNodes = GetChildNodes(objectId, connection);
+
+            // Рекурсивно удалить потомков
+            foreach (int childId in childNodes)
+            {
+                RemoveNodeAndDescendants(childId, connection);
+            }
+
+            string deleteHooksQuery = "DELETE FROM Hooks WHERE IDparent = @ObjectId";
+
+            using (SqlCommand deleteHooksCommand = new SqlCommand(deleteHooksQuery, connection))
+            {
+                deleteHooksCommand.Parameters.AddWithValue("@ObjectId", objectId);
+
+                try
+                {
+                    // Удаление связей из таблицы Hooks
+                    deleteHooksCommand.ExecuteNonQuery();
+
+                    // Удаление элемента из базы данных
+                    string deleteObjectQuery = "DELETE FROM Object WHERE ID = @ObjectId";
+
+                    using (SqlCommand deleteObjectCommand = new SqlCommand(deleteObjectQuery, connection))
+                    {
+                        deleteObjectCommand.Parameters.AddWithValue("@ObjectId", objectId);
+
+                        // Удаление элемента из таблицы Object
+                        deleteObjectCommand.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при удалении элемента: " + ex.Message);
+                }
+            }
+        }
+
+        private List<int> GetChildNodes(int parentId, SqlConnection connection)
+        {
+            List<int> childNodes = new List<int>();
+
+            string getChildNodesQuery = "SELECT IDchild FROM Hooks WHERE IDparent = @ParentId";
+
+            using (SqlCommand getChildNodesCommand = new SqlCommand(getChildNodesQuery, connection))
+            {
+                getChildNodesCommand.Parameters.AddWithValue("@ParentId", parentId);
+
+                try
+                {
+                    using (SqlDataReader reader = getChildNodesCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int childId = (int)reader["IDchild"];
+                            childNodes.Add(childId);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при удалении элемента: " + ex.Message);
+                }
+            }
+
+            return childNodes;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         //{
         //    if (e.Button == MouseButtons.Right)
         //    {
-        //        TreeNode selectedNode = treeView1.GetNodeAt(e.Location);
-        //        if (selectedNode == null) // Проверяем, было ли ПКМ на пустом месте
-        //        {
-        //            //// Контекстное меню для добавления элемента
-        //            //ContextMenu menu = new ContextMenu();
-        //            //ContextMenu addElementMenuItem = new MenuItem("Добавить элемент");
-        //            //addElementMenuItem.Click += AddElementMenuItem_Click;
-        //            //menu.MenuItems.Add(addElementMenuItem);
-        //            //treeView1.ContextMenuStrip = menu;
-        //        }
-        //        //else // ПКМ был на существующем элементе
-        //        //{
-        //        //    // Контекстное меню для добавления связи
-        //        //    ContextMenu menu = new ContextMenu();
-        //        //    MenuItem addElementMenuItem = new MenuItem("Добавить элемент");
-        //        //    addElementMenuItem.Click += AddElementMenuItem_Click;
-        //        //    menu.MenuItems.Add(addElementMenuItem);
-        //        //    treeView1.ContextMenu = menu;
-        //        //}
-        //    }
-        //}
-        //private void AddElementMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    // Диалоговое окно с вопросом "Добавить элемент?"
-        //    DialogResult dialogResult = MessageBox.Show("Добавить элемент?", "Добавление элемента", MessageBoxButtons.YesNo);
-        //    if (dialogResult == DialogResult.Yes)
-        //    {
-        //        // Диалоговое окно для ввода данных нового элемента
-        //        AddElementForm addElementForm = new AddElementForm();
-        //        if (addElementForm.ShowDialog() == DialogResult.OK)
-        //        {
-        //            int newElementId = addElementForm.ElementId;
-        //            string newElementType = addElementForm.ElementType;
-        //            string newElementProduct = addElementForm.ElementProduct;
-
-        //            // Добавление нового элемента в базу данных
-        //            AddNewElementToDatabase(newElementId, newElementType, newElementProduct);
-
-        //            if (treeView1.SelectedNode == null) // Добавление элемента
-        //            {
-        //                TreeNode newNode = new TreeNode($"{newElementType}: {newElementProduct}");
-        //                newNode.Tag = newElementId;
-        //                treeView1.Nodes.Add(newNode);
-        //            }
-        //            else // Добавление связи (элемент будет дочерним)
-        //            {
-        //                TreeNode selectedNode = treeView1.SelectedNode;
-        //                int parentId = (int)selectedNode.Tag;
-
-        //                TreeNode newNode = new TreeNode($"{newElementType}: {newElementProduct}");
-        //                newNode.Tag = newElementId;
-
-        //                selectedNode.Nodes.Add(newNode);
-        //            }
-        //        }
+        //        treeView1.SelectedNode = e.Node;
         //    }
         //}
 
-
-
-        //// Диалоговое окно для добавления элемента
-        //public class AddElementForm : Form
-        //{
-        //    // Поля для ввода данных нового элемента
-        //    private TextBox txtId;
-        //    private TextBox txtType;
-        //    private TextBox txtProduct;
-        //    private Button btnAdd;
-
-        //    public int ElementId { get; private set; }
-        //    public string ElementType { get; private set; }
-        //    public string ElementProduct { get; private set; }
-
-        //    public AddElementForm()
-        //    {
-        //        InitializeComponent();
-        //    }
-
-        //    private void InitializeComponent()
-        //    {
-        //        // Создание элементов управления (TextBox, Button) и настройка их свойств и расположения на форме
-        //        // ...
-
-        //        // Назначение обработчика события для кнопки "Добавить"
-        //        btnAdd.Click += BtnAdd_Click;
-        //    }
-
-        //    private void BtnAdd_Click(object sender, EventArgs e)
-        //    {
-        //        // Получение введенных пользователем данных
-        //        ElementId = int.Parse(txtId.Text);
-        //        ElementType = txtType.Text;
-        //        ElementProduct = txtProduct.Text;
-
-        //        // Закрытие диалогового окна с результатом DialogResult.OK
-        //        DialogResult = DialogResult.OK;
-        //        Close();
-        //    }
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = treeView1.SelectedNode;
+            if (selectedNode != null)
+            {
+                RemoveNode(selectedNode);
+            }
         }
+
+        private void ChangeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = treeView1.SelectedNode;
+
+            if (selectedNode != null)
+            {
+                int objectId = (int)selectedNode.Tag;
+
+                // Создаем экземпляр ChangeForm
+                ChangeForm changeForm = new ChangeForm(connectionString);
+
+                // Передаем значение продукта и текущий тип в ChangeForm
+                string[] parts = selectedNode.Text.Split(new[] { ": " }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 2)
+                {
+                    changeForm.CurrentType = parts[0];
+                    changeForm.Product = parts[1];
+                }
+
+                // Подписываемся на событие изменения продукта в ChangeForm
+                changeForm.ProductChanged += (product) =>
+                {
+                    // Обновляем значение продукта в TreeView
+                    selectedNode.Text = changeForm.CurrentType + ": " + product;
+                    MessageBox.Show("Продукт успешно изменен.");
+
+                    // Обновляем значение продукта в базе данных
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string updateQuery = "UPDATE Object SET Product = @Product WHERE ID = @ObjectId";
+
+                        using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                        {
+                            updateCommand.Parameters.AddWithValue("@Product", product);
+                            updateCommand.Parameters.AddWithValue("@ObjectId", objectId);
+                            updateCommand.ExecuteNonQuery();
+                        }
+
+                        connection.Close();
+                    }
+                };
+
+                // Открываем ChangeForm в виде модального диалога
+                changeForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Выберите элемент для изменения.");
+            }
+        }
+
+
+
     }
-
-
+}

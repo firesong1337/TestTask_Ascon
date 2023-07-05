@@ -32,7 +32,10 @@
             button1 = new Button();
             treeView1 = new TreeView();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            добавитьToolStripMenuItem = new ToolStripMenuItem();
+            AddNewToolStripMenuItem = new ToolStripMenuItem();
+            AddToExistingToolStripMenuItem = new ToolStripMenuItem();
+            DeleteToolStripMenuItem = new ToolStripMenuItem();
+            ChangeToolStripMenuItem = new ToolStripMenuItem();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -50,20 +53,40 @@
             treeView1.ContextMenuStrip = contextMenuStrip1;
             treeView1.Location = new Point(22, 12);
             treeView1.Name = "treeView1";
-            treeView1.Size = new Size(380, 591);
+            treeView1.Size = new Size(380, 482);
             treeView1.TabIndex = 1;
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { добавитьToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { AddNewToolStripMenuItem, AddToExistingToolStripMenuItem, DeleteToolStripMenuItem, ChangeToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(127, 26);
+            contextMenuStrip1.Size = new Size(233, 114);
             // 
-            // добавитьToolStripMenuItem
+            // AddNewToolStripMenuItem
             // 
-            добавитьToolStripMenuItem.Name = "добавитьToolStripMenuItem";
-            добавитьToolStripMenuItem.Size = new Size(126, 22);
-            добавитьToolStripMenuItem.Text = "Добавить";
+            AddNewToolStripMenuItem.Name = "AddNewToolStripMenuItem";
+            AddNewToolStripMenuItem.Size = new Size(232, 22);
+            AddNewToolStripMenuItem.Text = "Добавить новый";
+            // 
+            // AddToExistingToolStripMenuItem
+            // 
+            AddToExistingToolStripMenuItem.Name = "AddToExistingToolStripMenuItem";
+            AddToExistingToolStripMenuItem.Size = new Size(232, 22);
+            AddToExistingToolStripMenuItem.Text = "Добавить к существующему";
+            AddToExistingToolStripMenuItem.Click += AddToExistingToolStripMenuItem_Click;
+            // 
+            // DeleteToolStripMenuItem
+            // 
+            DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
+            DeleteToolStripMenuItem.Size = new Size(232, 22);
+            DeleteToolStripMenuItem.Text = "Удалить";
+            // 
+            // ChangeToolStripMenuItem
+            // 
+            ChangeToolStripMenuItem.Name = "ChangeToolStripMenuItem";
+            ChangeToolStripMenuItem.Size = new Size(232, 22);
+            ChangeToolStripMenuItem.Text = "Изменить";
+            ChangeToolStripMenuItem.Click += ChangeToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -84,6 +107,9 @@
         private Button button1;
         private TreeView treeView1;
         private ContextMenuStrip contextMenuStrip1;
-        private ToolStripMenuItem добавитьToolStripMenuItem;
+        private ToolStripMenuItem AddNewToolStripMenuItem;
+        private ToolStripMenuItem AddToExistingToolStripMenuItem;
+        private ToolStripMenuItem DeleteToolStripMenuItem;
+        private ToolStripMenuItem ChangeToolStripMenuItem;
     }
 }
