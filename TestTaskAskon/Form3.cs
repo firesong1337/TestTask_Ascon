@@ -14,11 +14,9 @@ namespace TestTaskAskon
     public partial class ChangeForm : Form
     {
         private string connectionString;
-        // Событие изменения продукта
         public event Action<string> ProductChanged;
         public int ObjectId { get; set; }
         public string CurrentType { get; set; }
-        // Свойство для получения и установки значения продукта
         public string Product
         {
             get { return ProducttextBox1.Text; }
@@ -43,10 +41,8 @@ namespace TestTaskAskon
 
         private void BtnApply_Click(object sender, EventArgs e)
         {
-            // Получаем значение продукта без префикса типа
             string product = GetProductValue(ProducttextBox1.Text);
 
-            // Обновляем значение продукта в базе данных
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -64,13 +60,13 @@ namespace TestTaskAskon
 
                 connection.Close();
             }
-
-            // Вызываем событие изменения продукта и передаем новое значение
             ProductChanged?.Invoke(product);
-
-            // Закрываем форму
             Close();
         }
 
+        private void ChangeForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

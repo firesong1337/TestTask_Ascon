@@ -146,8 +146,6 @@ namespace TestTaskAskon
                 MessageBox.Show("Пожалуйста, заполните все поля");
                 return;
             }
-
-            // Закройте форму и верните результат DialogResult.OK
             DialogResult = DialogResult.OK;
             Close();
         }

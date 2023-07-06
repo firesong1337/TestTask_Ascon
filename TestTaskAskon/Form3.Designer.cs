@@ -69,6 +69,7 @@
             Controls.Add(label1);
             Name = "ChangeForm";
             Text = "Form3";
+            Load += ChangeForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

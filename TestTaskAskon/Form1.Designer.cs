@@ -29,24 +29,17 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            button1 = new Button();
             treeView1 = new TreeView();
             contextMenuStrip1 = new ContextMenuStrip(components);
             AddNewToolStripMenuItem = new ToolStripMenuItem();
             AddToExistingToolStripMenuItem = new ToolStripMenuItem();
             DeleteToolStripMenuItem = new ToolStripMenuItem();
             ChangeToolStripMenuItem = new ToolStripMenuItem();
+            dataGridView1 = new DataGridView();
+            ExportToXmlButton = new Button();
             contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.Location = new Point(629, 74);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
             // 
             // treeView1
             // 
@@ -60,7 +53,7 @@
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { AddNewToolStripMenuItem, AddToExistingToolStripMenuItem, DeleteToolStripMenuItem, ChangeToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(233, 114);
+            contextMenuStrip1.Size = new Size(233, 92);
             // 
             // AddNewToolStripMenuItem
             // 
@@ -88,28 +81,49 @@
             ChangeToolStripMenuItem.Text = "Изменить";
             ChangeToolStripMenuItem.Click += ChangeToolStripMenuItem_Click;
             // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(434, 12);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.Size = new Size(501, 322);
+            dataGridView1.TabIndex = 3;
+            // 
+            // ExportToXmlButton
+            // 
+            ExportToXmlButton.Location = new Point(434, 366);
+            ExportToXmlButton.Name = "ExportToXmlButton";
+            ExportToXmlButton.Size = new Size(262, 23);
+            ExportToXmlButton.TabIndex = 4;
+            ExportToXmlButton.Text = "Экспорт структуры в XML";
+            ExportToXmlButton.UseVisualStyleBackColor = true;
+            ExportToXmlButton.Click += ExportToXmlButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(971, 615);
+            Controls.Add(ExportToXmlButton);
+            Controls.Add(dataGridView1);
             Controls.Add(treeView1);
-            Controls.Add(button1);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
             contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Button button1;
         private TreeView treeView1;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem AddNewToolStripMenuItem;
         private ToolStripMenuItem AddToExistingToolStripMenuItem;
         private ToolStripMenuItem DeleteToolStripMenuItem;
         private ToolStripMenuItem ChangeToolStripMenuItem;
+        private DataGridView dataGridView1;
+        private Button ExportToXmlButton;
     }
 }
